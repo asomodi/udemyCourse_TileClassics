@@ -3,6 +3,14 @@ var ballY = 75;
 var ballSpeedX = 5;
 var ballSpeedY = 7;
 
+const BRICK_W = 100;
+const bRICK_H = 50;
+const BRICK_Count = 4;
+var brick1 = true;
+var brick2 = true;
+var brick3 = true;
+var brick4 = true;
+
 const PADDLE_WIDTH = 100;
 const PADDLE_THICKNESS = 10;
 const PADDLE_DIST_FROM_EDGE = 60;
@@ -84,6 +92,21 @@ function moveAll() {
   }
 }
 
+function drawBricks() {
+  if (brick1 == true) {
+    colorRect(0, 0, BRICK_W - 2, bRICK_H, 'blue');
+  }
+  if (brick2 == true) {
+    colorRect(BRICK_W, 0, BRICK_W - 2, bRICK_H, 'blue');
+  }
+  if (brick3 == true) {
+    colorRect(BRICK_W * 2, 0, BRICK_W - 2, bRICK_H, 'blue');
+  }
+  if (brick4 == true) {
+    colorRect(BRICK_W * 3, 0, BRICK_W - 2, bRICK_H, 'blue');
+  }
+}
+
 function drawAll() {
   colorRect(0, 0, canvas.width, canvas.height, 'black'); // clear screen
   colorCircle(ballX, ballY, 10, 'white'); // draw ball
@@ -95,6 +118,8 @@ function drawAll() {
     PADDLE_THICKNESS,
     'white'
   );
+
+  drawBricks();
 
   colorText(mouseX + ',' + mouseY, mouseX, mouseY, 'yellow');
 }
