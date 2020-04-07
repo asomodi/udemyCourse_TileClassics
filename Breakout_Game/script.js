@@ -11,12 +11,15 @@ var paddleX = 400;
 
 var canvas, canvasContext;
 
+var mouseX = 0;
+var mouseY = 0;
+
 function updateMousePos(evt) {
   var rect = canvas.getBoundingClientRect();
   var root = document.documentElement;
 
-  var mouseX = evt.clientX - rect.left - root.scrollLeft;
-  // var mouseY = evt.clientY - rect.top - root.scrollTop;
+  mouseX = evt.clientX - rect.left - root.scrollLeft;
+  mouseY = evt.clientY - rect.top - root.scrollTop;
 
   paddleX = mouseX - PADDLE_WIDTH / 2;
 }
@@ -60,7 +63,6 @@ function moveAll() {
   if (ballY > canvas.height) {
     // bottom
     ballReset();
-    ballSpeedY *= -1;
   }
 
   var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
@@ -93,6 +95,8 @@ function drawAll() {
     PADDLE_THICKNESS,
     'white'
   );
+
+  colorText(mouseX + ',' + mouseY, mouseX, mouseY, 'yellow');
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
@@ -105,4 +109,9 @@ function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.beginPath();
   canvasContext.arc(centerX, centerY, 10, 0, Math.PI * 2, true);
   canvasContext.fill();
+}
+
+function colorText(showWords, textX, textY, fillColor) {
+  canvasContext.fillStyle = fillColor;
+  canvasContext.fillText(showWords, textX, textY);
 }
