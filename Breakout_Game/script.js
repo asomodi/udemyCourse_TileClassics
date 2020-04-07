@@ -4,12 +4,10 @@ var ballSpeedX = 5;
 var ballSpeedY = 7;
 
 const BRICK_W = 100;
-const bRICK_H = 50;
-const BRICK_Count = 4;
-var brick1 = true;
-var brick2 = true;
-var brick3 = true;
-var brick4 = true;
+const BRICK_H = 50;
+const BRICK_COUNT = 10;
+
+var brickGrid = new Array(BRICK_COUNT);
 
 const PADDLE_WIDTH = 100;
 const PADDLE_THICKNESS = 10;
@@ -32,6 +30,12 @@ function updateMousePos(evt) {
   paddleX = mouseX - PADDLE_WIDTH / 2;
 }
 
+function brickReset() {
+  for (var i = 0; i < BRICK_COUNT; i++) {
+    brickGrid[i] = true;
+  }
+}
+
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
@@ -40,6 +44,8 @@ window.onload = function () {
   setInterval(updateAll, 1000 / framesPerSecond);
 
   canvas.addEventListener('mousemove', updateMousePos);
+
+  brickReset();
 };
 
 function updateAll() {
@@ -93,17 +99,10 @@ function moveAll() {
 }
 
 function drawBricks() {
-  if (brick1 == true) {
-    colorRect(0, 0, BRICK_W - 2, bRICK_H, 'blue');
-  }
-  if (brick2 == true) {
-    colorRect(BRICK_W, 0, BRICK_W - 2, bRICK_H, 'blue');
-  }
-  if (brick3 == true) {
-    colorRect(BRICK_W * 2, 0, BRICK_W - 2, bRICK_H, 'blue');
-  }
-  if (brick4 == true) {
-    colorRect(BRICK_W * 3, 0, BRICK_W - 2, bRICK_H, 'blue');
+  for (var i = 0; i < BRICK_COUNT; i++) {
+    if (brickGrid[i]) {
+      colorRect(BRICK_W * i, 0, BRICK_W - 2, BRICK_H, 'blue');
+    }
   }
 }
 
