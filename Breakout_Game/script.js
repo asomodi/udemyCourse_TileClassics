@@ -6,10 +6,10 @@ var ballSpeedY = 7;
 const BRICK_W = 100;
 const BRICK_H = 50;
 const BRICK_GAP = 2;
-const BRICK_COUNT = 10;
+const BRICK_COLS = 10;
 const BRICK_ROWS = 4;
 
-var brickGrid = new Array(BRICK_COUNT);
+var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 
 const PADDLE_WIDTH = 100;
 const PADDLE_THICKNESS = 10;
@@ -33,15 +33,14 @@ function updateMousePos(evt) {
 }
 
 function brickReset() {
-  for (var i = 0; i < BRICK_COUNT; i++) {
-    /*if (Math.random() < 0.5) {
+  for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
+    if (Math.random() < 0.5) {
       brickGrid[i] = true;
     } else {
       brickGrid[i] = false;
-    }*/
-    brickGrid[i] = true;
-  }
-}
+    } // end of else (rand check)
+  } // end of for each brick
+} // end of brickReset function
 
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
@@ -107,19 +106,21 @@ function moveAll() {
 
 function drawBricks() {
   for (var eachRow = 0; eachRow < BRICK_ROWS; eachRow++) {
-    for (var i = 0; i < BRICK_COUNT; i++) {
-      if (brickGrid[i]) {
+    for (var eachCol = 0; eachCol < BRICK_COLS; eachCol++) {
+      var arrayIndex = BRICK_COLS * eachRow + eachCol;
+
+      if (brickGrid[arrayIndex]) {
         colorRect(
-          BRICK_W * i,
+          BRICK_W * eachCol,
           BRICK_H * eachRow,
           BRICK_W - BRICK_GAP,
           BRICK_H - BRICK_GAP,
           'blue'
         );
-      }
-    }
+      } // end of is this brick here
+    } // end of for each brick
   }
-}
+} // end of drawBricks func
 
 function drawAll() {
   colorRect(0, 0, canvas.width, canvas.height, 'black'); // clear screen
