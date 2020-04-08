@@ -7,6 +7,7 @@ const BRICK_W = 100;
 const BRICK_H = 50;
 const BRICK_GAP = 2;
 const BRICK_COUNT = 10;
+const BRICK_ROWS = 4;
 
 var brickGrid = new Array(BRICK_COUNT);
 
@@ -33,11 +34,12 @@ function updateMousePos(evt) {
 
 function brickReset() {
   for (var i = 0; i < BRICK_COUNT; i++) {
-    if (Math.random() < 0.5) {
+    /*if (Math.random() < 0.5) {
       brickGrid[i] = true;
     } else {
       brickGrid[i] = false;
-    }
+    }*/
+    brickGrid[i] = true;
   }
 }
 
@@ -104,9 +106,17 @@ function moveAll() {
 }
 
 function drawBricks() {
-  for (var i = 0; i < BRICK_COUNT; i++) {
-    if (brickGrid[i]) {
-      colorRect(BRICK_W * i, 0, BRICK_W - BRICK_GAP, BRICK_H, 'blue');
+  for (var eachRow = 0; eachRow < BRICK_ROWS; eachRow++) {
+    for (var i = 0; i < BRICK_COUNT; i++) {
+      if (brickGrid[i]) {
+        colorRect(
+          BRICK_W * i,
+          BRICK_H * eachRow,
+          BRICK_W - BRICK_GAP,
+          BRICK_H - BRICK_GAP,
+          'blue'
+        );
+      }
     }
   }
 }
