@@ -5,6 +5,7 @@ var ballSpeedY = 7;
 
 const BRICK_W = 100;
 const BRICK_H = 50;
+const BRICK_GAP = 2;
 const BRICK_COUNT = 10;
 
 var brickGrid = new Array(BRICK_COUNT);
@@ -32,7 +33,11 @@ function updateMousePos(evt) {
 
 function brickReset() {
   for (var i = 0; i < BRICK_COUNT; i++) {
-    brickGrid[i] = true;
+    if (Math.random() < 0.5) {
+      brickGrid[i] = true;
+    } else {
+      brickGrid[i] = false;
+    }
   }
 }
 
@@ -101,7 +106,7 @@ function moveAll() {
 function drawBricks() {
   for (var i = 0; i < BRICK_COUNT; i++) {
     if (brickGrid[i]) {
-      colorRect(BRICK_W * i, 0, BRICK_W - 2, BRICK_H, 'blue');
+      colorRect(BRICK_W * i, 0, BRICK_W - BRICK_GAP, BRICK_H, 'blue');
     }
   }
 }
@@ -120,7 +125,9 @@ function drawAll() {
 
   drawBricks();
 
-  colorText(mouseX + ',' + mouseY, mouseX, mouseY, 'yellow');
+  var mouseBrickCol = mouseX / BRICK_W;
+  var mouseBrickRow = mouseY / BRICK_H;
+  colorText(mouseBrickCol + ',' + mouseBrickRow, mouseX, mouseY, 'yellow');
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
