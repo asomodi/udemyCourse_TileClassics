@@ -48,6 +48,7 @@ window.onload = function () {
   canvas.addEventListener('mousemove', updateMousePos);
 
   brickReset();
+  // ballReset();
 };
 
 function updateAll() {
@@ -60,7 +61,7 @@ function ballReset() {
   ballY = canvas.height / 2;
 }
 
-function moveAll() {
+function ballMove() {
   ballX += ballSpeedX;
   ballY += ballSpeedY;
 
@@ -80,7 +81,9 @@ function moveAll() {
     // bottom
     ballReset();
   }
+}
 
+function ballBrickHandling() {
   var ballBrickCol = Math.floor(ballX / BRICK_W);
   var ballBrickRow = Math.floor(ballY / BRICK_H);
   var brickIndexUnderBall = rowColToArrayIndex(ballBrickCol, ballBrickRow);
@@ -94,9 +97,11 @@ function moveAll() {
     if (brickGrid[brickIndexUnderBall]) {
       brickGrid[brickIndexUnderBall] = false;
       ballSpeedY *= -1;
-    }
-  }
+    } // end of brick found
+  } // end of valid col and row
+} // end of ballBrickHandling func
 
+function ballPaddlehandling() {
   var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
   var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
   var paddleLeftEdgeX = paddleX;
@@ -114,6 +119,12 @@ function moveAll() {
     var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
     ballSpeedX = ballDistFromPaddleCenterX * 0.35;
   }
+}
+
+function moveAll() {
+  ballMove();
+  ballBrickHandling();
+  ballPaddlehandling();
 }
 
 function rowColToArrayIndex(col, row) {
