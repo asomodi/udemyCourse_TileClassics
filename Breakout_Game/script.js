@@ -91,7 +91,10 @@ function moveAll() {
     ballBrickRow >= 0 &&
     ballBrickRow < BRICK_ROWS
   ) {
-    brickGrid[brickIndexUnderBall] = false;
+    if (brickGrid[brickIndexUnderBall]) {
+      brickGrid[brickIndexUnderBall] = false;
+      ballSpeedY *= -1;
+    }
   }
 
   var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
