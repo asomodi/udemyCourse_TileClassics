@@ -34,11 +34,7 @@ function updateMousePos(evt) {
 
 function brickReset() {
   for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
-    if (Math.random() < 0.5) {
-      brickGrid[i] = true;
-    } else {
-      brickGrid[i] = false;
-    } // end of else (rand check)
+    brickGrid[i] = true;
   } // end of for each brick
 } // end of brickReset function
 
@@ -83,6 +79,17 @@ function moveAll() {
   if (ballY > canvas.height) {
     // bottom
     ballReset();
+  }
+
+  var ballBrickCol = Math.floor(ballX / BRICK_W);
+  var ballBrickRow = Math.floor(ballY / BRICK_H);
+  var brickIndexUnderBall = rowColToArrayIndex(ballBrickCol, ballBrickRow);
+
+  if (
+    brickIndexUnderBall >= 0 &&
+    brickIndexUnderBall < BRICK_COLS * BRICK_ROWS
+  ) {
+    brickGrid[brickIndexUnderBall] = false;
   }
 
   var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
@@ -139,16 +146,6 @@ function drawAll() {
   );
 
   drawBricks();
-
-  var mouseBrickCol = Math.floor(mouseX / BRICK_W);
-  var mouseBrickRow = Math.floor(mouseY / BRICK_H);
-  var brickIndexUnderMouse = rowColToArrayIndex(mouseBrickCol, mouseBrickRow);
-  colorText(
-    mouseBrickCol + ',' + mouseBrickRow + ':' + brickIndexUnderMouse,
-    mouseX,
-    mouseY,
-    'yellow'
-  );
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
