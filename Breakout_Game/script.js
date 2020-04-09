@@ -104,10 +104,14 @@ function moveAll() {
   }
 }
 
+function rowColToArrayIndex(col, row) {
+  return col + BRICK_COLS * row;
+}
+
 function drawBricks() {
   for (var eachRow = 0; eachRow < BRICK_ROWS; eachRow++) {
     for (var eachCol = 0; eachCol < BRICK_COLS; eachCol++) {
-      var arrayIndex = BRICK_COLS * eachRow + eachCol;
+      var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
       if (brickGrid[arrayIndex]) {
         colorRect(
@@ -138,7 +142,13 @@ function drawAll() {
 
   var mouseBrickCol = Math.floor(mouseX / BRICK_W);
   var mouseBrickRow = Math.floor(mouseY / BRICK_H);
-  colorText(mouseBrickCol + ',' + mouseBrickRow, mouseX, mouseY, 'yellow');
+  var brickIndexUnderMouse = rowColToArrayIndex(mouseBrickCol, mouseBrickRow);
+  colorText(
+    mouseBrickCol + ',' + mouseBrickRow + ':' + brickIndexUnderMouse,
+    mouseX,
+    mouseY,
+    'yellow'
+  );
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
