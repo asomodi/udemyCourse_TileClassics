@@ -34,7 +34,7 @@ function updateMousePos(evt) {
   // cheat / hack to test ball in any position
   ballX = mouseX;
   ballY = mouseY;
-  ballSpeedX = 5;
+  ballSpeedX = 4;
   ballSpeedY = -4;
 }
 
@@ -107,10 +107,28 @@ function ballBrickHandling() {
       var prevBallY = ballY - ballSpeedY;
       var prevBrickCol = Math.floor(prevBallX / BRICK_W);
       var prevBrickRow = Math.floor(prevBallY / BRICK_H);
+
+      var bothTestsFailed = true;
+
       if (prevBrickCol != ballBrickCol) {
-        ballSpeedX *= -1;
+        var adjBrickSide = rowColToArrayIndex(prevBrickCol, ballBrickRow);
+        if (brickGrid[adjBrickSide] == false) {
+          ballSpeedX *= -1;
+          bothTestsFailed = false;
+        }
       }
       if (prevBrickRow != ballBrickRow) {
+        var adjBrickTopBot = rowColToArrayIndex(ballBrickCol, prevBrickRow);
+
+        if ((brickGrid[adjBrickTopBot] = false)) {
+          ballSpeedY *= -1;
+          bothTestsFailed = false;
+        }
+      }
+
+      if (bothTestsFailed) {
+        // armpit case, prevents ball from going through
+        ballSpeedX *= -1;
         ballSpeedY *= -1;
       }
     } // end of brick found
