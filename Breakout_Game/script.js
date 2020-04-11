@@ -41,7 +41,11 @@ function updateMousePos(evt) {
 
 function brickReset() {
   bricksLeft = 0;
-  for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
+  var i;
+  for (i = 0; i < 3 * BRICK_COLS; i++) {
+    brickGrid[i] = false;
+  }
+  for (; i < BRICK_COLS * BRICK_ROWS; i++) {
     brickGrid[i] = true;
     bricksLeft++;
   } // end of for each brick
