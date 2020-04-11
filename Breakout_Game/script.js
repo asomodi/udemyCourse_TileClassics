@@ -96,7 +96,17 @@ function ballBrickHandling() {
   ) {
     if (brickGrid[brickIndexUnderBall]) {
       brickGrid[brickIndexUnderBall] = false;
-      ballSpeedY *= -1;
+
+      var prevBallX = ballX - ballSpeedX;
+      var prevBallY = ballY - ballSpeedY;
+      var prevBrickCol = Math.floor(prevBallX / BRICK_W);
+      var prevBrickRow = Math.floor(prevBallY / BRICK_H);
+      if (prevBrickCol != ballBrickCol) {
+        ballSpeedX *= -1;
+      }
+      if (prevBrickRow != ballBrickRow) {
+        ballSpeedY *= -1;
+      }
     } // end of brick found
   } // end of valid col and row
 } // end of ballBrickHandling func
