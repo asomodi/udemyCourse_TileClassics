@@ -32,11 +32,12 @@ function updateMousePos(evt) {
 
   paddleX = mouseX - PADDLE_WIDTH / 2;
 
-  // cheat / hack to test ball in any position
+  /* // cheat / hack to test ball in any position
   ballX = mouseX;
   ballY = mouseY;
   ballSpeedX = 4;
   ballSpeedY = -4;
+  */
 }
 
 function brickReset() {
@@ -93,6 +94,18 @@ function ballMove() {
   if (ballY > canvas.height) {
     // bottom
     ballReset();
+    brickReset();
+  }
+}
+
+// fix bug with hitting bottom bricks
+function isBrickAtColRow(col, row) {
+  if (col >= 0 && col < BRICK_COLS && row >= 0 && row < BRICK_ROWS) {
+    var brickIndexUnderCoord = rowColToArrayIndex(col, row);
+
+    return brickGrid[brickIndexUnderCoord];
+  } else {
+    return false;
   }
 }
 
@@ -107,7 +120,7 @@ function ballBrickHandling() {
     ballBrickRow >= 0 &&
     ballBrickRow < BRICK_ROWS
   ) {
-    if (brickGrid[brickIndexUnderBall]) {
+    if (isBrickAtColRow(ballBrickCol, ballBrickRow)) {
       brickGrid[brickIndexUnderBall] = false;
       bricksLeft--;
       console.log(bricksLeft);
@@ -120,16 +133,13 @@ function ballBrickHandling() {
       var bothTestsFailed = true;
 
       if (prevBrickCol != ballBrickCol) {
-        var adjBrickSide = rowColToArrayIndex(prevBrickCol, ballBrickRow);
-        if (brickGrid[adjBrickSide] == false) {
+        if (isBrickAtColRow(prevBrickCol, ballBrickRow) == false) {
           ballSpeedX *= -1;
           bothTestsFailed = false;
         }
       }
       if (prevBrickRow != ballBrickRow) {
-        var adjBrickTopBot = rowColToArrayIndex(ballBrickCol, prevBrickRow);
-
-        if ((brickGrid[adjBrickTopBot] = false)) {
+        if (isBrickAtColRow(ballBrickCol, prevBrickRow) == false) {
           ballSpeedY *= -1;
           bothTestsFailed = false;
         }
@@ -142,7 +152,7 @@ function ballBrickHandling() {
       }
     } // end of brick found
   } // end of valid col and row
-} // end of ballBrickHandling func
+} // end of ballBrickHandling function
 
 function ballPaddlehandling() {
   var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
