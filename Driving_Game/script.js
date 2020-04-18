@@ -9,8 +9,22 @@ const TRACK_GAP = 2;
 const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
 
-var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
-var tracksLeft = 0;
+// prettier-ignore
+var trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 var canvas, canvasContext;
 
@@ -32,14 +46,6 @@ function updateMousePos(evt) {
   */
 }
 
-function trackReset() {
-  tracksLeft = 0;
-  for (var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
-    trackGrid[i] = true;
-    tracksLeft++;
-  } // end of for each track
-} // end of trackReset function
-
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
@@ -49,7 +55,6 @@ window.onload = function () {
 
   canvas.addEventListener('mousemove', updateMousePos);
 
-  trackReset();
   ballReset();
 };
 
@@ -91,7 +96,7 @@ function isTrackAtColRow(col, row) {
   if (col >= 0 && col < TRACK_COLS && row >= 0 && row < TRACK_ROWS) {
     var trackIndexUnderCoord = rowColToArrayIndex(col, row);
 
-    return trackGrid[trackIndexUnderCoord];
+    return trackGrid[trackIndexUnderCoord] == 1;
   } else {
     return false;
   }
@@ -109,10 +114,6 @@ function ballTrackHandling() {
     ballTrackRow < TRACK_ROWS
   ) {
     if (isTrackAtColRow(ballTrackCol, ballTrackRow)) {
-      trackGrid[trackIndexUnderBall] = false;
-      tracksLeft--;
-      console.log(tracksLeft);
-
       var prevBallX = ballX - ballSpeedX;
       var prevBallY = ballY - ballSpeedY;
       var prevTrackCol = Math.floor(prevBallX / TRACK_W);
@@ -156,7 +157,7 @@ function drawTracks() {
     for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
       var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
-      if (trackGrid[arrayIndex]) {
+      if (trackGrid[arrayIndex] == 1) {
         colorRect(
           TRACK_W * eachCol,
           TRACK_H * eachRow,
