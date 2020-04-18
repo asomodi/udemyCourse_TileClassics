@@ -1,3 +1,6 @@
+var carPic = document.createElement('img');
+var carPicLoaded = false;
+
 var ballX = 75;
 var ballY = 75;
 var ballSpeedX = 5;
@@ -54,6 +57,11 @@ window.onload = function () {
   setInterval(updateAll, 1000 / framesPerSecond);
 
   canvas.addEventListener('mousemove', updateMousePos);
+
+  this.carPic.onload = function () {
+    carPicLoaded = true;
+  };
+  carPic.src = 'player1car.png';
 
   ballReset();
 };
@@ -153,7 +161,7 @@ function ballTrackHandling() {
 } // end of ballTrackHandling function
 
 function moveAll() {
-  // ballMove();
+  ballMove();
   ballTrackHandling();
 }
 
@@ -181,7 +189,14 @@ function drawTracks() {
 
 function drawAll() {
   colorRect(0, 0, canvas.width, canvas.height, 'black'); // clear screen
-  colorCircle(ballX, ballY, 10, 'white'); // draw ball
+  // colorCircle(ballX, ballY, 10, 'white'); // draw ball
+  if (carPicLoaded) {
+    canvasContext.drawImage(
+      carPic,
+      ballX - carPic.width / 2,
+      ballY - carPic.height / 2
+    );
+  }
 
   drawTracks();
 }
