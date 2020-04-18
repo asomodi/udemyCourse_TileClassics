@@ -89,24 +89,6 @@ function carMove() {
   carX += Math.cos(carAng) * carSpeed;
   carY += Math.sin(carAng) * carSpeed;
   carAng += 0.02;
-
-  if (carX < 0 && carSpeedX < 0.0) {
-    // left
-    carSpeedX *= -1;
-  }
-  if (carX > canvas.width && carSpeedX > 0.0) {
-    // right
-    carSpeedX *= -1;
-  }
-  if (carY < 0 && carSpeedY < 0.0) {
-    // top
-    carSpeedY *= -1;
-  }
-  if (carY > canvas.height) {
-    // bottom
-    carReset();
-    trackReset();
-  }
 }
 
 // fix bug with hitting bottom tracks
@@ -132,31 +114,7 @@ function carTrackHandling() {
     carTrackRow < TRACK_ROWS
   ) {
     if (isTrackAtColRow(carTrackCol, carTrackRow)) {
-      var prevCarX = carX - carSpeedX;
-      var prevCarY = carY - carSpeedY;
-      var prevTrackCol = Math.floor(prevCarX / TRACK_W);
-      var prevTrackRow = Math.floor(prevCarY / TRACK_H);
-
-      var bothTestsFailed = true;
-
-      if (prevTrackCol != carTrackCol) {
-        if (isTrackAtColRow(prevTrackCol, carTrackRow) == false) {
-          carSpeedX *= -1;
-          bothTestsFailed = false;
-        }
-      }
-      if (prevTrackRow != carTrackRow) {
-        if (isTrackAtColRow(carTrackCol, prevTrackRow) == false) {
-          carSpeedY *= -1;
-          bothTestsFailed = false;
-        }
-      }
-
-      if (bothTestsFailed) {
-        // armpit case, prevents car from going through
-        carSpeedX *= -1;
-        carSpeedY *= -1;
-      }
+      carSpeed *= -1;
     } // end of track found
   } // end of valid col and row
 } // end of carTrackHandling function
