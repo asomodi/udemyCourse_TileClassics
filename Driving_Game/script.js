@@ -6,7 +6,7 @@ var ballSpeedY = 7;
 const TRACK_W = 40;
 const TRACK_H = 40;
 const TRACK_GAP = 2;
-const TRACK_COLS = 10;
+const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
 
 var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
