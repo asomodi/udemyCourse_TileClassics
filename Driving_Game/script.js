@@ -4,7 +4,7 @@ var carPicLoaded = false;
 var carX = 75;
 var carY = 75;
 var carAng = 0;
-var carSpeed = 2;
+var carSpeed = 0;
 
 const TRACK_W = 40;
 const TRACK_H = 40;
@@ -36,6 +36,11 @@ const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 
+var keyHeld_Gas = false;
+var keyHeld_Reverse = false;
+var keyHeld_TurnLeft = false;
+var keyHeld_TurnRight = false;
+
 var mouseX = 0;
 var mouseY = 0;
 
@@ -57,21 +62,33 @@ function updateMousePos(evt) {
 function keyPressed(evt) {
   // console.log('Key pressed: ' + evt.keyCode);
   if (evt.keyCode == KEY_LEFT_ARROW) {
-    carAng -= 0.5;
+    keyHeld_TurnLeft -= true;
   }
   if (evt.keyCode == KEY_RIGHT_ARROW) {
-    carAng += 0.5;
+    keyHeld_TurnRight += true;
   }
   if (evt.keyCode == KEY_UP_ARROW) {
-    carSpeed += 0.5;
+    keyHeld_Gas += true;
   }
   if (evt.keyCode == KEY_DOWN_ARROW) {
-    carSpeed -= 0.5;
+    keyHeld_Reverse -= true;
   }
 }
 
 function keyReleased(evt) {
-  console.log('Key released: ' + evt.keyCode);
+  // console.log('Key released: ' + evt.keyCode);
+  if (evt.keyCode == KEY_LEFT_ARROW) {
+    keyHeld_TurnLeft -= false;
+  }
+  if (evt.keyCode == KEY_RIGHT_ARROW) {
+    keyHeld_TurnRight += false;
+  }
+  if (evt.keyCode == KEY_UP_ARROW) {
+    keyHeld_Gas += false;
+  }
+  if (evt.keyCode == KEY_DOWN_ARROW) {
+    keyHeld_Reverse -= false;
+  }
 }
 
 window.onload = function () {
@@ -114,6 +131,19 @@ function carReset() {
 }
 
 function carMove() {
+  if (keyHeld_Gas) {
+    carSpeed += 0.2;
+  }
+  if (keyHeld_Reverse) {
+    carSpeed -= 0.2;
+  }
+  if (keyHeld_TurnLeft) {
+    carAng -= 0.04;
+  }
+  if (keyHeld_TurnRight) {
+    carAng += 0.04;
+  }
+
   carX += Math.cos(carAng) * carSpeed;
   carY += Math.sin(carAng) * carSpeed;
 }
