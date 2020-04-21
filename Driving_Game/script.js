@@ -6,6 +6,11 @@ var carY = 75;
 var carAng = 0;
 var carSpeed = 0;
 
+const GROUNDSPEED_DECAY_MULT = 0.94;
+const DRIVE_POWER = 0.4;
+const REVERSE_POWER = 0.3;
+const TURN_RATE = 0.04;
+
 const TRACK_W = 40;
 const TRACK_H = 40;
 const TRACK_GAP = 2;
@@ -28,6 +33,10 @@ var trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                  1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
                  1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
                  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+const TRACK_ROAD = 0;
+const TRACK_WALL = 1;
+const TRACK_PLAYERSTART = 2;
 
 var canvas, canvasContext;
 
@@ -122,8 +131,8 @@ function carReset() {
     for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
       var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
-      if (trackGrid[arrayIndex] == 2) {
-        trackGrid[arrayIndex] = 0;
+      if (trackGrid[arrayIndex] == TRACK_PLAYERSTART) {
+        trackGrid[arrayIndex] = TRACK_ROAD;
         carAng = -Math.PI / 2;
         carX = eachCol * TRACK_W + TRACK_W / 2;
         carY = eachRow * TRACK_H + +TRACK_H / 2;
@@ -133,19 +142,19 @@ function carReset() {
 }
 
 function carMove() {
-  carSpeed *= 0.97;
+  carSpeed *= GROUNDSPEED_DECAY_MULT;
 
   if (keyHeld_Gas) {
-    carSpeed += 0.3;
+    carSpeed += DRIVE_POWER;
   }
   if (keyHeld_Reverse) {
-    carSpeed -= 0.3;
+    carSpeed -= REVERSE_POWER;
   }
   if (keyHeld_TurnLeft) {
-    carAng -= 0.09;
+    carAng -= TURN_RATE;
   }
   if (keyHeld_TurnRight) {
-    carAng += 0.09;
+    carAng += TURN_RATE;
   }
 
   carX += Math.cos(carAng) * carSpeed;
@@ -153,7 +162,7 @@ function carMove() {
 }
 
 // fix bug with hitting bottom tracks
-function isTrackAtColRow(col, row) {
+function isWallAtColRow(col, row) {
   if (col >= 0 && col < TRACK_COLS && row >= 0 && row < TRACK_ROWS) {
     var trackIndexUnderCoord = rowColToArrayIndex(col, row);
 
@@ -174,7 +183,7 @@ function carTrackHandling() {
     carTrackRow >= 0 &&
     carTrackRow < TRACK_ROWS
   ) {
-    if (isTrackAtColRow(carTrackCol, carTrackRow)) {
+    if (isWallAtColRow(carTrackCol, carTrackRow)) {
       carSpeed *= -0.5;
     } // end of track found
   } // end of valid col and row
@@ -194,7 +203,7 @@ function drawTracks() {
     for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
       var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
-      if (trackGrid[arrayIndex] == 1) {
+      if (trackGrid[arrayIndex] == TRACK_WALL) {
         colorRect(
           TRACK_W * eachCol,
           TRACK_H * eachRow,
