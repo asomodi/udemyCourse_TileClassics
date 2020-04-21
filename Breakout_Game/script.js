@@ -87,7 +87,7 @@ function ballMove() {
     // right
     ballSpeedX *= -1;
   }
-  if (ballY < 0) {
+  if (ballY < 0 && ballSpeedY < 0.0) {
     // top
     ballSpeedY *= -1;
   }

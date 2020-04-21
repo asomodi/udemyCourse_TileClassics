@@ -49,6 +49,14 @@ function updateMousePos(evt) {
   */
 }
 
+function keyPressed(evt) {
+  console.log('Key pressed: ' + evt.keyCode);
+}
+
+function keyReleased(evt) {
+  console.log('Key released: ' + evt.keyCode);
+}
+
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
@@ -57,6 +65,9 @@ window.onload = function () {
   setInterval(updateAll, 1000 / framesPerSecond);
 
   canvas.addEventListener('mousemove', updateMousePos);
+
+  document.addEventListener('keydown', keyPressed);
+  document.addEventListener('keyup', keyReleased);
 
   this.carPic.onload = function () {
     carPicLoaded = true;
