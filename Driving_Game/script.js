@@ -62,32 +62,33 @@ function updateMousePos(evt) {
 function keyPressed(evt) {
   // console.log('Key pressed: ' + evt.keyCode);
   if (evt.keyCode == KEY_LEFT_ARROW) {
-    keyHeld_TurnLeft -= true;
+    keyHeld_TurnLeft = true;
   }
   if (evt.keyCode == KEY_RIGHT_ARROW) {
-    keyHeld_TurnRight += true;
+    keyHeld_TurnRight = true;
   }
   if (evt.keyCode == KEY_UP_ARROW) {
-    keyHeld_Gas += true;
+    keyHeld_Gas = true;
   }
   if (evt.keyCode == KEY_DOWN_ARROW) {
-    keyHeld_Reverse -= true;
+    keyHeld_Reverse = true;
   }
+  evt.preventDefault();
 }
 
 function keyReleased(evt) {
   // console.log('Key released: ' + evt.keyCode);
   if (evt.keyCode == KEY_LEFT_ARROW) {
-    keyHeld_TurnLeft -= false;
+    keyHeld_TurnLeft = false;
   }
   if (evt.keyCode == KEY_RIGHT_ARROW) {
-    keyHeld_TurnRight += false;
+    keyHeld_TurnRight = false;
   }
   if (evt.keyCode == KEY_UP_ARROW) {
-    keyHeld_Gas += false;
+    keyHeld_Gas = false;
   }
   if (evt.keyCode == KEY_DOWN_ARROW) {
-    keyHeld_Reverse -= false;
+    keyHeld_Reverse = false;
   }
 }
 
@@ -123,6 +124,7 @@ function carReset() {
 
       if (trackGrid[arrayIndex] == 2) {
         trackGrid[arrayIndex] = 0;
+        carAng = -Math.PI / 2;
         carX = eachCol * TRACK_W + TRACK_W / 2;
         carY = eachRow * TRACK_H + +TRACK_H / 2;
       }
@@ -131,17 +133,19 @@ function carReset() {
 }
 
 function carMove() {
+  carSpeed *= 0.97;
+
   if (keyHeld_Gas) {
-    carSpeed += 0.2;
+    carSpeed += 0.3;
   }
   if (keyHeld_Reverse) {
-    carSpeed -= 0.2;
+    carSpeed -= 0.3;
   }
   if (keyHeld_TurnLeft) {
-    carAng -= 0.04;
+    carAng -= 0.09;
   }
   if (keyHeld_TurnRight) {
-    carAng += 0.04;
+    carAng += 0.09;
   }
 
   carX += Math.cos(carAng) * carSpeed;
@@ -171,7 +175,7 @@ function carTrackHandling() {
     carTrackRow < TRACK_ROWS
   ) {
     if (isTrackAtColRow(carTrackCol, carTrackRow)) {
-      carSpeed *= -1;
+      carSpeed *= -0.5;
     } // end of track found
   } // end of valid col and row
 } // end of carTrackHandling function
