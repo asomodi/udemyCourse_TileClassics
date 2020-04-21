@@ -55,7 +55,19 @@ function updateMousePos(evt) {
 }
 
 function keyPressed(evt) {
-  console.log('Key pressed: ' + evt.keyCode);
+  // console.log('Key pressed: ' + evt.keyCode);
+  if (evt.keyCode == KEY_LEFT_ARROW) {
+    carAng -= 0.5;
+  }
+  if (evt.keyCode == KEY_RIGHT_ARROW) {
+    carAng += 0.5;
+  }
+  if (evt.keyCode == KEY_UP_ARROW) {
+    carSpeed += 0.5;
+  }
+  if (evt.keyCode == KEY_DOWN_ARROW) {
+    carSpeed -= 0.5;
+  }
 }
 
 function keyReleased(evt) {
@@ -104,7 +116,6 @@ function carReset() {
 function carMove() {
   carX += Math.cos(carAng) * carSpeed;
   carY += Math.sin(carAng) * carSpeed;
-  carAng += 0.02;
 }
 
 // fix bug with hitting bottom tracks
