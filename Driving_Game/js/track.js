@@ -64,12 +64,28 @@ function drawTracks() {
   for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
     for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
       var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
+      var tileKindHere = trackGrid[arrayIndex];
+      var useImg;
 
-      if (trackGrid[arrayIndex] == TRACK_ROAD) {
-        canvasContext.drawImage(roadPic, TRACK_W * eachCol, TRACK_H * eachRow);
-      } else if (trackGrid[arrayIndex] == TRACK_WALL) {
-        canvasContext.drawImage(wallPic, TRACK_W * eachCol, TRACK_H * eachRow); // end of is this track here
+      switch (tileKindHere) {
+        case TRACK_ROAD:
+          useImg = roadPic;
+          break;
+        case TRACK_WALL:
+          useImg = wallPic;
+          break;
+        case TRACK_GOAL:
+          useImg = goalPic;
+          break;
+        case TRACK_TREE:
+          useImg = treePic;
+          break;
+        case TRACK_FLAG:
+          useImg = flagPic;
+          break;
       }
+
+      canvasContext.drawImage(useImg, TRACK_W * eachCol, TRACK_H * eachRow);
     } // end of for each col
   } // end of for each row
 } // end of drawTracks func
