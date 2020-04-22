@@ -12,19 +12,13 @@ function countLoadedImagesAndLAunchIfReady() {
   }
 }
 
-function carImageLoad() {
-  carPic.onload = countLoadedImagesAndLAunchIfReady;
-  carPic.src = 'player1car.png';
-}
-
-function trackLoadImages() {
-  roadPic.onload = countLoadedImagesAndLAunchIfReady;
-  wallPic.onload = countLoadedImagesAndLAunchIfReady;
-  roadPic.src = 'track_road.png';
-  wallPic.src = 'track_wall.png';
+function beginLoadingImage(imgVar, fileName) {
+  imgVar.onload = countLoadedImagesAndLAunchIfReady;
+  imgVar.src = fileName;
 }
 
 function loadImages() {
-  carImageLoad();
-  trackLoadImages();
+  beginLoadingImage(carPic, 'player1car.png');
+  beginLoadingImage(roadPic, 'track_road.png');
+  beginLoadingImage(wallPic, 'track_wall.png');
 }
